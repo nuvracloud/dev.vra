@@ -23,7 +23,8 @@ export function DateRangePicker({ dateRange, setDateRange, className }: DateRang
 
   const handlePresetChange = (preset: string) => {
     const today = new Date()
-    const from = new Date()
+    today.setHours(0, 0, 0, 0) // Reset time to midnight
+    const from = new Date(today)
 
     switch (preset) {
       case "last7days":

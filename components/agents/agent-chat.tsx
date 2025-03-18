@@ -19,7 +19,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 // Mock data - in a real app, this would come from an API
-const agentData = {
+const agentData: Record<string, {
+  id: string
+  name: string
+  avatar: string
+  welcomeMessage: string
+}> = {
   "1": {
     id: "1",
     name: "Assistente de Vendas",
@@ -80,7 +85,7 @@ export function AgentChat({ agentId }: { agentId: string }) {
 
     // Add user message
     const userMessage: Message = {
-      id: `user-${Date.now()}`,
+      id: `user-${messages.length + 1}`,
       content: input,
       role: "user",
       timestamp: new Date(),
@@ -99,7 +104,7 @@ export function AgentChat({ agentId }: { agentId: string }) {
     setTimeout(
       () => {
         const assistantMessage: Message = {
-          id: `assistant-${Date.now()}`,
+          id: `assistant-${messages.length + 2}`,
           content: getRandomResponse(),
           role: "assistant",
           timestamp: new Date(),
@@ -108,8 +113,8 @@ export function AgentChat({ agentId }: { agentId: string }) {
         setMessages((prev) => [...prev, assistantMessage])
         setIsLoading(false)
       },
-      1000 + Math.random() * 2000,
-    ) // Random delay between 1-3 seconds
+      1500, // Fixed delay instead of random
+    )
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

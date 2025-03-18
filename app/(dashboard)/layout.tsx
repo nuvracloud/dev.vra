@@ -1,14 +1,29 @@
 import type React from "react"
+import { cookies } from "next/headers"
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { redirect } from "next/navigation"
 import { DashboardNav } from "@/components/dashboard/dashboard-nav"
 import { WorkspaceSwitcher } from "@/components/dashboard/workspace-switcher"
 import { MobileNav } from "@/components/dashboard/mobile-nav"
 import { UserNav } from "@/components/dashboard/user-nav"
 
-export default function DashboardLayout({
+export const dynamic = "force-dynamic"
+
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const supabase = createServerComponentClient({ cookies })
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  if (!session) {
+    redirect("/login")
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 border-b bg-background">

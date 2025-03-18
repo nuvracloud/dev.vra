@@ -10,16 +10,20 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
+import { FormItem } from "@/components/ui/form"
 
 export function AccountSettings() {
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState({
-    username: "joaosilva",
+  const defaultFormData = {
+    name: "João Silva",
+    email: "joao@example.com",
+    phone: "(11) 99999-9999",
     language: "pt-BR",
     timezone: "America/Sao_Paulo",
-    dateFormat: "DD/MM/YYYY",
-  })
+    dateFormat: "DD/MM/YYYY"
+  }
+  const [formData, setFormData] = useState(defaultFormData)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -53,10 +57,10 @@ export function AccountSettings() {
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
-            <div className="grid gap-2">
-              <Label htmlFor="username">Nome de usuário</Label>
-              <Input id="username" name="username" value={formData.username} onChange={handleChange} />
-            </div>
+            <FormItem>
+              <Label htmlFor="name">Nome</Label>
+              <Input id="name" name="name" value={formData.name} onChange={handleChange} />
+            </FormItem>
             <div className="grid gap-2">
               <Label htmlFor="language">Idioma</Label>
               <Select value={formData.language} onValueChange={(value) => handleSelectChange("language", value)}>
